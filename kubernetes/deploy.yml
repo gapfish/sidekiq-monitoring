@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sidekiq-monitoring
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        pod: sidekiq-monitoring
+    spec:
+      containers:
+      - name: sidekiq-monitoring
+        image: gapfish/sidekiq-monitoring
+        ports:
+        - containerPort: 9292
+        env:
+        - name: RACK_ENV
+          value: production
+        - name: REDIS_SENTINEL_SERVICE
+          value: redis-sentinel
+
+        resources:
+          requests:
+            cpu: 10m
